@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div style="padding-left: 20%;">
+    <form action="{% url 'log' %}" method="post" class="pure-form" >
+        {% csrf_token %}
+        <div class="post-title">登陆</div>
+            <p>
+                <label class="post-description">姓名:&nbsp;&nbsp;</label>
+                <input type="text"   name="username" validateevent="true">
+            </p>
+
+            <p >
+                <label class="post-description">密码:&nbsp;&nbsp;</label>
+            <input type="password"  name="passwd" validateevent="true">
+            </p>
+
+            <p>
+                <input type="submit" class="pure-button" >
+                <input type="reset" class="pure-button">
+            </p>
+    </form>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

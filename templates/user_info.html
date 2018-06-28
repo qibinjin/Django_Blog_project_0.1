@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+        .line-height{
+            line-height:70px;
+        }
+    </style>
+    <div class="pure-table" style="width: 500px;height:300px;text-align: center;margin: 0px auto">
+        <div class="post-description line-height"><span>用户名：&nbsp;</span>{{ username }}</div>
+        <div class="post-description line-height"><span>Last_Name:&nbsp;</span>{{ last_name }}</div>
+        <div class="post-description line-height"><span>Fast_Name:&nbsp;</span>{{ first_name }}</div>
+        <div class="post-description line-height"><span>Email_Address:&nbsp;</span>{{ email }}</div>
+    </div>
+
+{% endblock %}

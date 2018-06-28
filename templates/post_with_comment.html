@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <style>
+        /* table 样式 */
+        table {
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+        }
+
+        table td,
+        table th {
+            border-bottom: 1px solid #ccc;
+            border-right: 1px solid #ccc;
+            padding: 3px 5px;
+        }
+
+        table th {
+            border-bottom: 2px solid #ccc;
+            text-align: center;
+        }
+
+        /* blockquote 样式 */
+        blockquote {
+            display: block;
+            border-left: 8px solid #d0e5f2;
+            padding: 5px 10px;
+            margin: 10px 0;
+            line-height: 1.4;
+            font-size: 100%;
+            background-color: #f1f1f1;
+        }
+
+        /* code 样式 */
+        code {
+            display: inline-block;
+            *display: inline;
+            *zoom: 1;
+            background-color: #f1f1f1;
+            border-radius: 3px;
+            padding: 3px 5px;
+            margin: 0 3px;
+        }
+
+        pre code {
+            display: block;
+        }
+
+        /* ul ol 样式 */
+        ul, ol {
+            margin: 10px 0 10px 20px;
+        }
+    </style>
+
+    <div class="posts">
+        <section class="post">
+            <header class="post-header">
+                <h2 class="post-title">{{ post.title }}</h2>
+                <p class="post-meta">
+                    Time: <a class="post-author" href="{% url 'date' date=post.date_time %}">{{ post.date_time|date:"Y /m /d" }}</a>
+                </p>
+            </header>
+            <div class="post-description">
+                <p>
+                    {{ post.content|safe }}
+                </p>
+            </div>
+        </section>
+
+        <section class="post">
+            <!--以下为评论相关-->
+            {% for comment in comment_list %}
+                <header class="post-header">
+                    <h2 class="content-subhead username" >{{ comment.author }}</h2>
+                    <p class="post-meta">
+                        Time: <a class="post-author" href="#">{{ comment.date_time|date:"Y /m /d" }}</a>
+                    </p>
+                </header>
+                <div class="post-description">
+                    {{ comment.content|safe }}
+                </div>
+            {% endfor %}
+        </section>
+        <!--以下为富文本编辑器-->
+        <form id="sqlform" action="{% url 'detail' id=post.id %}" method="post">
+            <textarea id="text1" style="display: none;" name="text2" validateevent="true">
+            </textarea>
+            <div id="div1" class="toolbar">
+            </div>
+            <div style="padding: 5px 0; color: #ccc"></div>
+            <div id="div2" class="text"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+                <p>请输入内容</p>
+            </div>
+
+            <script type="text/javascript">
+                var E = window.wangEditor;
+                var editor1 = new E('#div1', '#div2'); // 两个参数也可以传入 elem 对象，class 选择器
+                var $text1 = $('#text1'); //通过ID获取textarea对象
+                editor1.customConfig.onchange = function (html) {
+                    // 监控变化，同步更新到 textarea
+                    var filter_html = filterXSS(html)
+                    $text1.val(filter_html)
+                };
+
+                // editor1.customConfig.uploadImgShowBase64 = true; //图像通过base64存储
+                editor1.create(); //创建富文本编辑器
+                $text1.val(editor1.txt.html());
+
+                window.onload = function () {
+                    document.getElementById('btn1').addEventListener('click', function () {
+                        // 读取 html
+                        editor1.txt.clear();
+                        // document.getElementById('123').innerHTML = filter_html
+                    }, false)
+                };
+
+            </script>
+            <!--//通过button按钮提交文字-->
+            <button type="submit" id="btn2" class="pure-button">提交评论</button>
+            <button type="reset" id="btn1" class="pure-button">清空窗口</button>
+        </form>
+    </div>
+{% endblock %}

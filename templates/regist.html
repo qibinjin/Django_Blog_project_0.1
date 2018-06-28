@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+    <script>
+        window.onload = function () {
+            var userName = document.getElementById('id_username');
+            var passWd = document.getElementById('id_password');
+            var first_Name = document.getElementById('id_first_name');
+            var last_Name = document.getElementById('id_last_name');
+            var email_Address = document.getElementById('id_email_add');
+            document.getElementById('submit_button').onclick = function () {
+                if (!(/[0-9a-zA-Z]?\d*/.test(userName.value)) || userName.value.length < 6 || userName.value.length > 20) {
+                    alert('用户名必须是6-20位的字母数字下划线且不能用下划线开头')
+                    return false
+                }
+                else if (passWd.value.length < 10) {
+                    alert('密码必须不小于10位')
+                    return false
+                }
+                else if (!/\d+@164|126|qq.com/.test(email_Address.value)) {
+                    alert('请输入正确的邮箱地址')
+                    return false
+                }
+                return true
+            };
+
+        }
+
+    </script>
+
+    <div style="padding-left: 20%;">
+        <form action="{% url 'regist' %}" method="post" class="pure-form" id="tf">
+            {% csrf_token %}
+            <div class="post-title">注册</div>
+            <p>
+                <label class="post-description">姓名:&nbsp;&nbsp;</label>
+                <input value='' type="text" id='id_username' name="username" validateevent="true"
+                       placeholder="非下划线开头6-20位字母数字下划线">
+            </p>
+
+            <p>
+                <label class="post-description">密码:&nbsp;&nbsp;</label>
+                <input type="password" id="id_password" name="passwd" validateevent="true" placeholder="不得少于10位">
+            </p>
+
+            <p>
+                <label class="post-description">First_Name:&nbsp;&nbsp;</label>
+                <input type="text" id="id_first_name" name="first_name" validateevent="true" placeholder="选填">
+            </p>
+
+            <p>
+                <label class="post-description">Last_Name:&nbsp;&nbsp;</label>
+                <input type="text" id="id_last_name" name="last_name" validateevent="true" placeholder="选填">
+            </p>
+
+            <p>
+                <label class="post-description">Email_Address:&nbsp;&nbsp;</label>
+                <input type="text" id="id_email_add" name="email_add" validateevent="true" placeholder="xxx@xxx.com的形式">
+            </p>
+
+
+            <p>
+                <button type="submit" class="pure-button" id="submit_button">提交</button>
+                <input type="reset" class="pure-button">
+            </p>
+        </form>
+    </div>
+
+    </div>
+
+
+
+{% endblock %}
